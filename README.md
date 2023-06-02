@@ -7,7 +7,7 @@
 **Mandatory Veriables in Config**
 
 - `UPSTREAM_REPO`: Your github repository link, if your repo is private add `https://<deploy_token>:<empty_password>@gitlab.com/<your_username>/<repository_name>
-` format. Get token from [Github settings](https://github.com/settings/tokens). So you can update your bot from filled repository on each restart. `Str`.
+` format. `Str`.
   - **NOTE**: Don't forget to remove '<' and '>' . Follow [*THIS TUTORIAL*](https://graph.org/GitLab-Upstream-Tutorial-06-02) to generate upstream repo. 
               - Any change in docker or requirements you need to deploy/build again with updated repo to take effect. 
               - DON'T delete .gitignore file. For more information read [THIS](https://github.com/Dawn-India/Z-Mirror#upstream-repo-recommended).
