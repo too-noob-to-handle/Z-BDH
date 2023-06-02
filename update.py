@@ -46,7 +46,7 @@ if len(UPSTREAM_REPO) == 0:
 
 UPSTREAM_BRANCH = environ.get('UPSTREAM_BRANCH', '')
 if len(UPSTREAM_BRANCH) == 0:
-    UPSTREAM_BRANCH = 'zh_run'
+    UPSTREAM_BRANCH = 'rail_upstream'
 
 if UPSTREAM_REPO:
     if ospath.exists('.git'):
