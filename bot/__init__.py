@@ -31,6 +31,22 @@ basicConfig(format='%(levelname)s | From %(name)s -> %(module)s line no: %(linen
 
 LOGGER = getLogger(__name__)
 
+CONFIG_FILE_URL = environ.get('CONFIG_FILE_URL')
+try:
+    if len(CONFIG_FILE_URL) == 0:
+        raise TypeError
+    try:
+        res = rget(CONFIG_FILE_URL)
+        if res.status_code == 200:
+            with open('config.env', 'wb+') as f:
+                f.write(res.content)
+        else:
+            log_error(f"Failed to download config.env {res.status_code}")
+    except Exception as e:
+        log_error(f"CONFIG_FILE_URL: {e}")
+except:
+    pass
+
 load_dotenv('config.env', override=True)
 
 def getConfig(name: str):
@@ -53,7 +69,7 @@ non_queued_dl = set()
 non_queued_up = set()
 
 try:
-    if bool(environ.get('_____REMOVE_THIS_LINE_____')):
+    if bool(getConfig('_____REMOVE_THIS_LINE_____')):
         error('README is there to be read! Read and try again! Exiting now!')
         exit()
 except:
