@@ -33,6 +33,9 @@ LOGGER = getLogger(__name__)
 
 load_dotenv('config.env', override=True)
 
+def getConfig(name: str):
+    return environ[name]
+
 Interval = []
 QbInterval = []
 QbTorrents = {}
@@ -65,14 +68,14 @@ download_dict = {}
 rss_dict = {}
 cached_dict = {}
 
-BOT_TOKEN = environ.get('BOT_TOKEN', '')
+BOT_TOKEN = getConf('BOT_TOKEN', '')
 if len(BOT_TOKEN) == 0:
     error("BOT_TOKEN variable is missing! Exiting now")
     exit(1)
 
 bot_id = BOT_TOKEN.split(':', 1)[0]
 
-DATABASE_URL = environ.get('DATABASE_URL', '')
+DATABASE_URL = getConf('DATABASE_URL', '')
 if len(DATABASE_URL) == 0:
     DATABASE_URL = ''
 
@@ -98,67 +101,67 @@ if DATABASE_URL:
         del qbit_opt['_id']
         qbit_options = qbit_opt
     conn.close()
-    BOT_TOKEN = environ.get('BOT_TOKEN', '')
+    BOT_TOKEN = getConf('BOT_TOKEN', '')
     bot_id = BOT_TOKEN.split(':', 1)[0]
-    DATABASE_URL = environ.get('DATABASE_URL', '')
+    DATABASE_URL = getConf('DATABASE_URL', '')
 else:
     config_dict = {}
 
-OWNER_ID = environ.get('OWNER_ID', '')
+OWNER_ID = getConf('OWNER_ID', '')
 if len(OWNER_ID) == 0:
     error("OWNER_ID variable is missing! Exiting now")
     exit(1)
 else:
     OWNER_ID = int(OWNER_ID)
 
-TELEGRAM_API = environ.get('TELEGRAM_API', '')
+TELEGRAM_API = getConf('TELEGRAM_API', '')
 if len(TELEGRAM_API) == 0:
     error("TELEGRAM_API variable is missing! Exiting now")
     exit(1)
 else:
     TELEGRAM_API = int(TELEGRAM_API)
 
-TELEGRAM_HASH = environ.get('TELEGRAM_HASH', '')
+TELEGRAM_HASH = getConf('TELEGRAM_HASH', '')
 if len(TELEGRAM_HASH) == 0:
     error("TELEGRAM_HASH variable is missing! Exiting now")
     exit(1)
 
-GDRIVE_ID = environ.get('GDRIVE_ID', '')
+GDRIVE_ID = getConf('GDRIVE_ID', '')
 if len(GDRIVE_ID) == 0:
     warning('GDRIVE_ID not provided!')
     GDRIVE_ID = ''
 
-RCLONE_PATH = environ.get('RCLONE_PATH', '')
+RCLONE_PATH = getConf('RCLONE_PATH', '')
 if len(RCLONE_PATH) == 0:
     RCLONE_PATH = ''
 
-RCLONE_FLAGS = environ.get('RCLONE_FLAGS', '')
+RCLONE_FLAGS = getConf('RCLONE_FLAGS', '')
 if len(RCLONE_FLAGS) == 0:
     RCLONE_FLAGS = ''
 
-DEFAULT_UPLOAD = environ.get('DEFAULT_UPLOAD', '')
+DEFAULT_UPLOAD = getConf('DEFAULT_UPLOAD', '')
 if DEFAULT_UPLOAD != 'rc':
     DEFAULT_UPLOAD = 'gd'
 
-DOWNLOAD_DIR = environ.get('DOWNLOAD_DIR', '')
+DOWNLOAD_DIR = getConf('DOWNLOAD_DIR', '')
 if len(DOWNLOAD_DIR) == 0:
     DOWNLOAD_DIR = '/usr/src/app/downloads/'
 elif not DOWNLOAD_DIR.endswith("/"):
     DOWNLOAD_DIR = f'{DOWNLOAD_DIR}/'
 
-AUTHORIZED_CHATS = environ.get('AUTHORIZED_CHATS', '')
+AUTHORIZED_CHATS = getConf('AUTHORIZED_CHATS', '')
 if len(AUTHORIZED_CHATS) != 0:
     aid = AUTHORIZED_CHATS.split()
     for id_ in aid:
         user_data[int(id_.strip())] = {'is_auth': True}
 
-SUDO_USERS = environ.get('SUDO_USERS', '')
+SUDO_USERS = getConf('SUDO_USERS', '')
 if len(SUDO_USERS) != 0:
     aid = SUDO_USERS.split()
     for id_ in aid:
         user_data[int(id_.strip())] = {'is_sudo': True}
 
-EXTENSION_FILTER = environ.get('EXTENSION_FILTER', '')
+EXTENSION_FILTER = getConf('EXTENSION_FILTER', '')
 if len(EXTENSION_FILTER) > 0:
     fx = EXTENSION_FILTER.split()
     for x in fx:
@@ -168,7 +171,7 @@ if len(EXTENSION_FILTER) > 0:
 
 IS_PREMIUM_USER = False
 user = ''
-USER_SESSION_STRING = environ.get('USER_SESSION_STRING', '')
+USER_SESSION_STRING = getConf('USER_SESSION_STRING', '')
 if len(USER_SESSION_STRING) != 0:
     info("Creating client from USER_SESSION_STRING")
     user = tgClient('user', TELEGRAM_API, TELEGRAM_HASH, session_string=USER_SESSION_STRING,
@@ -181,148 +184,148 @@ if len(USER_SESSION_STRING) != 0:
     else:
         IS_PREMIUM_USER = user.me.is_premium
 
-MEGA_EMAIL = environ.get('MEGA_EMAIL', '')
-MEGA_PASSWORD = environ.get('MEGA_PASSWORD', '')
+MEGA_EMAIL = getConf('MEGA_EMAIL', '')
+MEGA_PASSWORD = getConf('MEGA_PASSWORD', '')
 if len(MEGA_EMAIL) == 0 or len(MEGA_PASSWORD) == 0:
     warning('MEGA Credentials not provided!')
     MEGA_EMAIL = ''
     MEGA_PASSWORD = ''
 
-UPTOBOX_TOKEN = environ.get('UPTOBOX_TOKEN', '')
+UPTOBOX_TOKEN = getConf('UPTOBOX_TOKEN', '')
 if len(UPTOBOX_TOKEN) == 0:
     UPTOBOX_TOKEN = ''
 
-INDEX_URL = environ.get('INDEX_URL', '').rstrip("/")
+INDEX_URL = getConf('INDEX_URL', '').rstrip("/")
 if len(INDEX_URL) == 0:
     INDEX_URL = ''
 
-SEARCH_API_LINK = environ.get('SEARCH_API_LINK', '').rstrip("/")
+SEARCH_API_LINK = getConf('SEARCH_API_LINK', '').rstrip("/")
 if len(SEARCH_API_LINK) == 0:
     SEARCH_API_LINK = ''
 
-LEECH_FILENAME_PREFIX = environ.get('LEECH_FILENAME_PREFIX', '')
+LEECH_FILENAME_PREFIX = getConf('LEECH_FILENAME_PREFIX', '')
 if len(LEECH_FILENAME_PREFIX) == 0:
     LEECH_FILENAME_PREFIX = ''
 
-LEECH_REMOVE_UNWANTED = environ.get('LEECH_REMOVE_UNWANTED', '')
+LEECH_REMOVE_UNWANTED = getConf('LEECH_REMOVE_UNWANTED', '')
 if len(LEECH_REMOVE_UNWANTED) == 0:
     LEECH_REMOVE_UNWANTED = ''
 
-SEARCH_PLUGINS = environ.get('SEARCH_PLUGINS', '')
+SEARCH_PLUGINS = getConf('SEARCH_PLUGINS', '')
 if len(SEARCH_PLUGINS) == 0:
     SEARCH_PLUGINS = ''
 
 MAX_SPLIT_SIZE = 4194304000 if IS_PREMIUM_USER else 2097152000
 
-LEECH_SPLIT_SIZE = environ.get('LEECH_SPLIT_SIZE', '')
+LEECH_SPLIT_SIZE = getConf('LEECH_SPLIT_SIZE', '')
 if len(LEECH_SPLIT_SIZE) == 0 or int(LEECH_SPLIT_SIZE) > MAX_SPLIT_SIZE:
     LEECH_SPLIT_SIZE = MAX_SPLIT_SIZE
 else:
     LEECH_SPLIT_SIZE = int(LEECH_SPLIT_SIZE)
 
-STATUS_UPDATE_INTERVAL = environ.get('STATUS_UPDATE_INTERVAL', '')
+STATUS_UPDATE_INTERVAL = getConf('STATUS_UPDATE_INTERVAL', '')
 if len(STATUS_UPDATE_INTERVAL) == 0:
     STATUS_UPDATE_INTERVAL = 10
 else:
     STATUS_UPDATE_INTERVAL = int(STATUS_UPDATE_INTERVAL)
 
-AUTO_DELETE_MESSAGE_DURATION = environ.get('AUTO_DELETE_MESSAGE_DURATION', '')
+AUTO_DELETE_MESSAGE_DURATION = getConf('AUTO_DELETE_MESSAGE_DURATION', '')
 if len(AUTO_DELETE_MESSAGE_DURATION) == 0:
     AUTO_DELETE_MESSAGE_DURATION = 30
 else:
     AUTO_DELETE_MESSAGE_DURATION = int(AUTO_DELETE_MESSAGE_DURATION)
 
-YT_DLP_OPTIONS = environ.get('YT_DLP_OPTIONS', '')
+YT_DLP_OPTIONS = getConf('YT_DLP_OPTIONS', '')
 if len(YT_DLP_OPTIONS) == 0:
     YT_DLP_OPTIONS = ''
 
-SEARCH_LIMIT = environ.get('SEARCH_LIMIT', '')
+SEARCH_LIMIT = getConf('SEARCH_LIMIT', '')
 SEARCH_LIMIT = 0 if len(SEARCH_LIMIT) == 0 else int(SEARCH_LIMIT)
 
-DUMP_CHAT_ID = environ.get('DUMP_CHAT_ID', '')
+DUMP_CHAT_ID = getConf('DUMP_CHAT_ID', '')
 DUMP_CHAT_ID = '' if len(DUMP_CHAT_ID) == 0 else int(DUMP_CHAT_ID)
 
-STATUS_LIMIT = environ.get('STATUS_LIMIT', '')
+STATUS_LIMIT = getConf('STATUS_LIMIT', '')
 STATUS_LIMIT = 5 if len(STATUS_LIMIT) == 0 else int(STATUS_LIMIT)
 
-CMD_SUFFIX = environ.get('CMD_SUFFIX', '')
+CMD_SUFFIX = getConf('CMD_SUFFIX', '')
 
-RSS_CHAT_ID = environ.get('RSS_CHAT_ID', '')
+RSS_CHAT_ID = getConf('RSS_CHAT_ID', '')
 RSS_CHAT_ID = '' if len(RSS_CHAT_ID) == 0 else int(RSS_CHAT_ID)
 
-RSS_DELAY = environ.get('RSS_DELAY', '')
+RSS_DELAY = getConf('RSS_DELAY', '')
 RSS_DELAY = 900 if len(RSS_DELAY) == 0 else int(RSS_DELAY)
 
-TORRENT_TIMEOUT = environ.get('TORRENT_TIMEOUT', '')
+TORRENT_TIMEOUT = getConf('TORRENT_TIMEOUT', '')
 TORRENT_TIMEOUT = '' if len(TORRENT_TIMEOUT) == 0 else int(TORRENT_TIMEOUT)
 
-QUEUE_ALL = environ.get('QUEUE_ALL', '')
+QUEUE_ALL = getConf('QUEUE_ALL', '')
 QUEUE_ALL = '' if len(QUEUE_ALL) == 0 else int(QUEUE_ALL)
 
-QUEUE_DOWNLOAD = environ.get('QUEUE_DOWNLOAD', '')
+QUEUE_DOWNLOAD = getConf('QUEUE_DOWNLOAD', '')
 QUEUE_DOWNLOAD = '' if len(QUEUE_DOWNLOAD) == 0 else int(QUEUE_DOWNLOAD)
 
-QUEUE_UPLOAD = environ.get('QUEUE_UPLOAD', '')
+QUEUE_UPLOAD = getConf('QUEUE_UPLOAD', '')
 QUEUE_UPLOAD = '' if len(QUEUE_UPLOAD) == 0 else int(QUEUE_UPLOAD)
 
-INCOMPLETE_TASK_NOTIFIER = environ.get('INCOMPLETE_TASK_NOTIFIER', '')
+INCOMPLETE_TASK_NOTIFIER = getConf('INCOMPLETE_TASK_NOTIFIER', '')
 INCOMPLETE_TASK_NOTIFIER = INCOMPLETE_TASK_NOTIFIER.lower() == 'true'
 
-STOP_DUPLICATE = environ.get('STOP_DUPLICATE', '')
+STOP_DUPLICATE = getConf('STOP_DUPLICATE', '')
 STOP_DUPLICATE = STOP_DUPLICATE.lower() == 'true'
 
-IS_TEAM_DRIVE = environ.get('IS_TEAM_DRIVE', '')
+IS_TEAM_DRIVE = getConf('IS_TEAM_DRIVE', '')
 IS_TEAM_DRIVE = IS_TEAM_DRIVE.lower() == 'true'
 
-USE_SERVICE_ACCOUNTS = environ.get('USE_SERVICE_ACCOUNTS', '')
+USE_SERVICE_ACCOUNTS = getConf('USE_SERVICE_ACCOUNTS', '')
 USE_SERVICE_ACCOUNTS = USE_SERVICE_ACCOUNTS.lower() == 'true'
 
-WEB_PINCODE = environ.get('WEB_PINCODE', '')
+WEB_PINCODE = getConf('WEB_PINCODE', '')
 WEB_PINCODE = WEB_PINCODE.lower() == 'true'
 
-AS_DOCUMENT = environ.get('AS_DOCUMENT', '')
+AS_DOCUMENT = getConf('AS_DOCUMENT', '')
 AS_DOCUMENT = AS_DOCUMENT.lower() == 'true'
 
-EQUAL_SPLITS = environ.get('EQUAL_SPLITS', '')
+EQUAL_SPLITS = getConf('EQUAL_SPLITS', '')
 EQUAL_SPLITS = EQUAL_SPLITS.lower() == 'true'
 
-MEDIA_GROUP = environ.get('MEDIA_GROUP', '')
+MEDIA_GROUP = getConf('MEDIA_GROUP', '')
 MEDIA_GROUP = MEDIA_GROUP.lower() == 'true'
 
-BASE_URL_PORT = environ.get('BASE_URL_PORT', '')
+BASE_URL_PORT = getConf('BASE_URL_PORT', '')
 BASE_URL_PORT = 80 if len(BASE_URL_PORT) == 0 else int(BASE_URL_PORT)
 
-BASE_URL = environ.get('BASE_URL', '').rstrip("/")
+BASE_URL = getConf('BASE_URL', '').rstrip("/")
 if len(BASE_URL) == 0:
     warning('BASE_URL not provided!')
     info('Torrent select wont work.')
     BASE_URL = ''
 
-UPSTREAM_REPO = environ.get('UPSTREAM_REPO', '')
+UPSTREAM_REPO = getConf('UPSTREAM_REPO', '')
 if len(UPSTREAM_REPO) == 0:
     UPSTREAM_REPO = 'https://gitlab.com/Dawn-India/Z-Mirror'
 
-UPSTREAM_BRANCH = environ.get('UPSTREAM_BRANCH', '')
+UPSTREAM_BRANCH = getConf('UPSTREAM_BRANCH', '')
 if len(UPSTREAM_BRANCH) == 0:
     UPSTREAM_BRANCH = 'zh_run'
 
-RCLONE_SERVE_URL = environ.get('RCLONE_SERVE_URL', '')
+RCLONE_SERVE_URL = getConf('RCLONE_SERVE_URL', '')
 if len(RCLONE_SERVE_URL) == 0:
     RCLONE_SERVE_URL = ''
 
-RCLONE_SERVE_PORT = environ.get('RCLONE_SERVE_PORT', '')
+RCLONE_SERVE_PORT = getConf('RCLONE_SERVE_PORT', '')
 RCLONE_SERVE_PORT = 8080 if len(
     RCLONE_SERVE_PORT) == 0 else int(RCLONE_SERVE_PORT)
 
-RCLONE_SERVE_USER = environ.get('RCLONE_SERVE_USER', '')
+RCLONE_SERVE_USER = getConf('RCLONE_SERVE_USER', '')
 if len(RCLONE_SERVE_USER) == 0:
     RCLONE_SERVE_USER = ''
 
-RCLONE_SERVE_PASS = environ.get('RCLONE_SERVE_PASS', '')
+RCLONE_SERVE_PASS = getConf('RCLONE_SERVE_PASS', '')
 if len(RCLONE_SERVE_PASS) == 0:
     RCLONE_SERVE_PASS = ''
 
-LOG_CHAT_ID = environ.get('LOG_CHAT_ID', '')
+LOG_CHAT_ID = getConf('LOG_CHAT_ID', '')
 if LOG_CHAT_ID.startswith('-100'):
     LOG_CHAT_ID = int(LOG_CHAT_ID)
 elif LOG_CHAT_ID.startswith('@'):
@@ -330,73 +333,73 @@ elif LOG_CHAT_ID.startswith('@'):
 else:
     LOG_CHAT_ID = ''
 
-USER_MAX_TASKS = environ.get('USER_MAX_TASKS', '')
+USER_MAX_TASKS = getConf('USER_MAX_TASKS', '')
 USER_MAX_TASKS = '' if len(USER_MAX_TASKS) == 0 else int(USER_MAX_TASKS)
 
-STORAGE_THRESHOLD = environ.get('STORAGE_THRESHOLD', '')
+STORAGE_THRESHOLD = getConf('STORAGE_THRESHOLD', '')
 STORAGE_THRESHOLD = '' if len(
     STORAGE_THRESHOLD) == 0 else float(STORAGE_THRESHOLD)
 
-TORRENT_LIMIT = environ.get('TORRENT_LIMIT', '')
+TORRENT_LIMIT = getConf('TORRENT_LIMIT', '')
 TORRENT_LIMIT = '' if len(TORRENT_LIMIT) == 0 else float(TORRENT_LIMIT)
 
-DIRECT_LIMIT = environ.get('DIRECT_LIMIT', '')
+DIRECT_LIMIT = getConf('DIRECT_LIMIT', '')
 DIRECT_LIMIT = '' if len(DIRECT_LIMIT) == 0 else float(DIRECT_LIMIT)
 
-YTDLP_LIMIT = environ.get('YTDLP_LIMIT', '')
+YTDLP_LIMIT = getConf('YTDLP_LIMIT', '')
 YTDLP_LIMIT = '' if len(YTDLP_LIMIT) == 0 else float(YTDLP_LIMIT)
 
-GDRIVE_LIMIT = environ.get('GDRIVE_LIMIT', '')
+GDRIVE_LIMIT = getConf('GDRIVE_LIMIT', '')
 GDRIVE_LIMIT = '' if len(GDRIVE_LIMIT) == 0 else float(GDRIVE_LIMIT)
 
-CLONE_LIMIT = environ.get('CLONE_LIMIT', '')
+CLONE_LIMIT = getConf('CLONE_LIMIT', '')
 CLONE_LIMIT = '' if len(CLONE_LIMIT) == 0 else float(CLONE_LIMIT)
 
-MEGA_LIMIT = environ.get('MEGA_LIMIT', '')
+MEGA_LIMIT = getConf('MEGA_LIMIT', '')
 MEGA_LIMIT = '' if len(MEGA_LIMIT) == 0 else float(MEGA_LIMIT)
 
-LEECH_LIMIT = environ.get('LEECH_LIMIT', '')
+LEECH_LIMIT = getConf('LEECH_LIMIT', '')
 LEECH_LIMIT = '' if len(LEECH_LIMIT) == 0 else float(LEECH_LIMIT)
 
-ENABLE_MESSAGE_FILTER = environ.get('ENABLE_MESSAGE_FILTER', '')
+ENABLE_MESSAGE_FILTER = getConf('ENABLE_MESSAGE_FILTER', '')
 ENABLE_MESSAGE_FILTER = ENABLE_MESSAGE_FILTER.lower() == 'true'
 
-STOP_DUPLICATE_TASKS = environ.get('STOP_DUPLICATE_TASKS', '')
+STOP_DUPLICATE_TASKS = getConf('STOP_DUPLICATE_TASKS', '')
 STOP_DUPLICATE_TASKS = STOP_DUPLICATE_TASKS.lower() == 'true'
 
-DISABLE_DRIVE_LINK = environ.get('DISABLE_DRIVE_LINK', '')
+DISABLE_DRIVE_LINK = getConf('DISABLE_DRIVE_LINK', '')
 DISABLE_DRIVE_LINK = DISABLE_DRIVE_LINK.lower() == 'true'
 
-DISABLE_LEECH = environ.get('DISABLE_LEECH', '')
+DISABLE_LEECH = getConf('DISABLE_LEECH', '')
 DISABLE_LEECH = DISABLE_LEECH.lower() == 'true'
 
-SET_COMMANDS = environ.get('SET_COMMANDS', '')
+SET_COMMANDS = getConf('SET_COMMANDS', '')
 SET_COMMANDS = SET_COMMANDS.lower() == 'true'
 
-REQUEST_LIMITS = environ.get('REQUEST_LIMITS', '')
+REQUEST_LIMITS = getConf('REQUEST_LIMITS', '')
 if REQUEST_LIMITS.isdigit():
     REQUEST_LIMITS = max(int(REQUEST_LIMITS), 5)
 else:
     REQUEST_LIMITS = ''
 
-DM_MODE = environ.get('DM_MODE', '')
+DM_MODE = getConf('DM_MODE', '')
 DM_MODE = DM_MODE.lower() if DM_MODE.lower() in [
     'leech', 'mirror', 'all'] else ''
 
-DELETE_LINKS = environ.get('DELETE_LINKS', '')
+DELETE_LINKS = getConf('DELETE_LINKS', '')
 DELETE_LINKS = DELETE_LINKS.lower() == 'true'
 
-TOKEN_TIMEOUT = environ.get('TOKEN_TIMEOUT', '')
+TOKEN_TIMEOUT = getConf('TOKEN_TIMEOUT', '')
 if TOKEN_TIMEOUT.isdigit():
     TOKEN_TIMEOUT = int(TOKEN_TIMEOUT)
 else:
     TOKEN_TIMEOUT = ''
 
-FSUB_IDS = environ.get('FSUB_IDS', '')
+FSUB_IDS = getConf('FSUB_IDS', '')
 if len(FSUB_IDS) == 0:
     FSUB_IDS = ''
 
-USER_DUMP = environ.get('USER_DUMP', '')
+USER_DUMP = getConf('USER_DUMP', '')
 USER_DUMP = '' if len(USER_DUMP) == 0 else USER_DUMP
 if USER_DUMP.isdigit() or USER_DUMP.startswith('-'):
     USER_DUMP = int(USER_DUMP)
@@ -533,7 +536,7 @@ if ospath.exists('categories.txt'):
                 tempdict['index_link'] = ''
             categories_dict[name] = tempdict
 
-PORT = environ.get('PORT')
+PORT = getConf('PORT')
 Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{PORT} --worker-class gevent", shell=True)
 
 info("Starting qBittorrent-Nox")
